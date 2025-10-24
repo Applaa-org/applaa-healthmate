@@ -11,6 +11,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Index from "./pages/Index";
+import ConditionDetail from "./pages/ConditionDetail";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -34,8 +36,26 @@ const indexRoute = createTanStackRoute({
   component: Index,
 })
 
+// Create condition detail route
+const conditionDetailRoute = createTanStackRoute({
+  getParentRoute: () => rootRoute,
+  path: '/condition/$conditionId',
+  component: ConditionDetail,
+})
+
+// Create not found route
+const notFoundRoute = createTanStackRoute({
+  getParentRoute: () => rootRoute,
+  path: '*',
+  component: NotFound,
+})
+
 // Create route tree
-const routeTree = rootRoute.addChildren([indexRoute])
+const routeTree = rootRoute.addChildren([
+  indexRoute, 
+  conditionDetailRoute, 
+  notFoundRoute
+])
 
 // Create router with proper TypeScript configuration
 const router = createRouter({ 
@@ -54,4 +74,3 @@ declare module '@tanstack/react-router' {
 const App = () => <RouterProvider router={router} />
 
 export default App;
-
